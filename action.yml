@@ -1,0 +1,31 @@
+name: Upload artifacts
+description: Uploads files to Nexus3 RM with POST method
+
+inputs:
+  directory:
+    required: false
+    description: Subdirectory to search files
+    default: ''
+  pattern:
+    required: true
+    description: File name or pattern to search
+  repositories:
+    required: true
+    description: Comma separated list of repositories where artifacts should be stored
+  timeout:
+    required: false
+    description: Timeout for single file upload
+    default: '60'
+
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Upload to nexus3
+      shell: bash
+      run: >
+        ${GITHUB_ACTION_PATH}/nexus_upload.py
+        -r "${{ inputs.repositories }}"
+        -p "${{ inputs.pattern }}"
+        -d "${{ inputs.directory }}"
+        -t ${{ inputs.timeout }}
