@@ -12,6 +12,10 @@ inputs:
   repositories:
     required: true
     description: Comma separated list of repositories where artifacts should be stored
+  path:
+    required: false
+    description: Path to store artifacts in Nexus3 RAW repository
+    default: '/'
   timeout:
     required: false
     description: Timeout for single file upload
@@ -28,4 +32,5 @@ runs:
         -r "${{ inputs.repositories }}"
         -p "${{ inputs.pattern }}"
         -d "${{ inputs.directory }}"
+        -s "${{ inputs.path }}"
         -t ${{ inputs.timeout }}

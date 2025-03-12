@@ -68,7 +68,7 @@ def upload_apt(filename: str, repo: str, timeout: int):
         response.raise_for_status()
 
 
-def upload_raw(filename: str, repo: str, timeout: int):
+def upload_raw(filename: str, repo: str, path: str, timeout: int):
     """Uploads file to Nexus3 RAW repository"""
     url = os.environ.get('NEXUS_HOST_URL') + '/service/rest/v1/components'
     params = {'repository': repo}
@@ -77,7 +77,7 @@ def upload_raw(filename: str, repo: str, timeout: int):
             'raw.asset1': (filename, file)
         }
         data = {
-            'raw.directory': '/',
+            'raw.directory': path,
             'raw.asset1.filename': filename
         }
         auth = requests.auth.HTTPBasicAuth(
@@ -109,6 +109,8 @@ def main():
     parser.add_argument('-t', required=False,
                         help='Timeout in seconds for single file upload',
                         type=int, default=100)
+    parser.add_argument('-s', required=False,
+                        help='Repository path for RAW upload', default='/')
     args = parser.parse_args()
     if len(args.d) > 0:
         os.chdir(args.d)
@@ -124,7 +126,7 @@ def main():
                     upload_apt(file, repo, args.t)
                 else:
                     log.info("Uploading RAW: %s", file)
-                    upload_raw(file, repo, args.t)
+                    upload_raw(file, repo, args.s, args.t)
                 log.info('Done')
     else:
         log.warning("No files found")

@@ -14,6 +14,7 @@ This action uploads files using post to [Sonatype Nexus3 repository manager](htt
       pattern: <Pattern for searching files>
       repositories: <Comma separated list of Nexus3 RM repositories names>
       directory: <Subdirectory for search in GITHUB_WORSPACE (without leading slash)> Optional
+      path: <Path in RAW repository to store artifact> Optional
       timeout: <Timeout for single file upload> Optional
 ```
 
@@ -28,6 +29,7 @@ This action uploads files using post to [Sonatype Nexus3 repository manager](htt
   with:
       pattern: "*.log"
       repositories: "rawrepo1, rawrepo2"
+      path: "/logs/"
 ```
 
 # Example APT repository
