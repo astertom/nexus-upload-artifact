@@ -23,14 +23,17 @@ inputs:
 
 
 runs:
-  using: 'composite'
-  steps:
-    - name: Upload to nexus3
-      shell: bash
-      run: >
-        ${GITHUB_ACTION_PATH}/nexus_upload.py
-        -r "${{ inputs.repositories }}"
-        -p "${{ inputs.pattern }}"
-        -d "${{ inputs.directory }}"
-        -s "${{ inputs.path }}"
-        -t ${{ inputs.timeout }}
+  using: 'docker'
+  image: 'Dockerfile'
+  entrypoint: "/opt/nexus_upload.py"
+  args:
+    - -r 
+    - ${{ inputs.repositories }}
+    - -p
+    - ${{ inputs.pattern }}
+    - -d
+    - ${{ inputs.directory }}
+    - -s
+    - ${{ inputs.path }}
+    - -t
+    - ${{ inputs.timeout }}
